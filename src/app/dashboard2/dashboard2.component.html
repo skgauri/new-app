@@ -1,0 +1,173 @@
+
+  <div class="dashboard">
+    <div class="header">
+        <div class="top-strip">
+            <h1>Order Details</h1>
+        </div>
+
+        <div class="filters">
+            <label for="entries">Show
+                <select id="entries" [(ngModel)]="selectedEntries" (change)="loadOrders()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select> entries
+            </label>
+            <label for="status">Status
+                <select id="status" [formControl]="statusFilter" (change)="filterOrders()">
+                    <option value="">Any</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </label>
+            <label for="location">Location
+                <select id="location" [formControl]="locationFilter" (change)="filterOrders()">
+                    <option value="">All</option>
+                    <option value="London">London</option>
+                    <option value="Madrid">Madrid</option>
+                    <option value="Berlin">Berlin</option>
+                    <option value="New York">New York</option>
+                    <option value="Paris">Paris</option>
+                </select>
+            </label>
+            <input type="text" id="name" [formControl]="nameFilter" placeholder="Search by name">
+            <button class="search-btn" (click)="filterOrders()">Search</button>
+        </div>
+        <div class="actions">
+            <button class="export-btn" (click)="exportToExcel()">Export to Excel</button>
+            <button class="refresh-btn" (click)="loadOrders()">Refresh List</button>
+        </div>
+    </div>
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer</th>
+                <th>Location</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Net Amount</th>
+                <th>Action</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ order.customer }}</td>
+            <td>{{ order.location }}</td>
+            <td>{{ order.orderDate }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.netAmount }}</td>
+            <td><a href="#" class="action-btn">&#x2192;</a></td>
+            <td>
+              <!-- Bind to component methods -->
+              <button (click)="insertOrder()">➕</button>
+              <button (click)="editOrder(order)">✏️</button>
+              <button *ngIf="order.id !== undefined" (click)="deleteOrder(order.id)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+        
+          <tbody id="order-table-body">
+            <tr>
+                <td>1</td>
+                <td alt="Michael Holz"> Michael Holz</td>
+                <td>London</td>
+                <td>Jun 15, 2017</td>
+                <td><span class="status delivered"></span> Delivered</td>
+                <td>$254</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button onclick="insertRowAfter(this)">➕</button>
+                    <button onclick="enableRowEditing(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td alt="Paula Wilson"> Paula Wilson</td>
+                <td>Madrid</td>
+                <td>Jun 21, 2017</td>
+                <td><span class="status shipped"></span> Shipped</td>
+                <td>$1,260</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button onclick="insertRowAfter(this)">➕</button>
+                    <button onclick="enableRowEditing(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td alt="Antonio Moreno"> Antonio Moreno</td>
+                <td>Berlin</td>
+                <td>Jul 04, 2017</td>
+                <td><span class="status cancelled"></span> Cancelled</td>
+                <td>$350</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button onclick="insertRowAfter(this)">➕</button>
+                    <button onclick="enableRowEditing(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td alt="Mary Saveley"> Mary Saveley</td>
+                <td>New York</td>
+                <td>Jul 16, 2017</td>
+                <td><span class="status pending"></span> Pending</td>
+                <td>$1,572</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button onclick="insertRowAfter(this)">➕</button>
+                    <button onclick="enableRowEditing(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td alt="Martin Sommer"> Martin Sommer</td>
+                <td>Paris</td>
+                <td>Aug 04, 2017</td>
+                <td><span class="status delivered"></span> Delivered</td>
+                <td>$580</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button onclick="insertRowAfter(this)">➕</button>
+                    <button onclick="enableRowEditing(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                </td>
+            </tr>
+            <tr *ngFor="let order of orders; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ order.customer }}</td>
+                <td>{{ order.location }}</td>
+                <td>{{ order.orderDate }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.netAmount }}</td>
+                <td><a href="#" class="action-btn">&#x2192;</a></td>
+                <td>
+                    <button (click)="insertOrder()">➕</button>
+                    <button (click)="editOrder(order)">✏️</button>
+                    <button *ngIf="order.id !== undefined" (click)="deleteOrder(order.id!)">🗑️</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span>Showing {{ orders.length }} entries</span>
+        <div class="pages">
+            <a href="#" (click)="previousPage()">Previous</a>
+            <!-- Implement pagination logic as needed -->
+            <a href="#" (click)="nextPage()">Next</a>
+        </div>
+    </div>
+</div>
+
+
+
